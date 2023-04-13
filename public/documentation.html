@@ -3,13 +3,163 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./style.css">
     <title>My first API</title> 
 </head>
 <body>
-<h1> This is my first API</h1>
-<h3>In this project, I will be building the server-side component for a movies web application. 
-    <br>The app will give users information about various movies, such as their genres, actors, and directors.
-    <br> Users will be able to sign-in, update their user personal info, and create a list of their favourite films.
-</h3>
+
+<h1> Movie Api</h1>
+<div class="grid-container">
+    <div class="grid-element first-row">
+        Business Logic
+    </div>
+    <div class="grid-element first-row">
+        URL
+    </div>
+    <div class="grid-element first-row">
+        HTTP Method
+    </div>
+    <div class="grid-element first-row">
+        Request body data format
+    </div>
+    <div class="grid-element first-row">
+        Response body data format
+    </div>
+    <div class="grid-element">
+        Return a list of ALL movies to the user
+    </div>
+    <div class="grid-element">
+        /movies
+    </div>
+    <div class="grid-element">
+        GET
+    </div>
+    <div class="grid-element">
+        None
+    </div>
+    <div class="grid-element">
+        A JSON object with data of all the movies
+    </div>
+    <div class="grid-element">
+        Return data about a single movie by title to the user   
+    </div>
+    <div class="grid-element">
+        /movies[name]
+    </div>
+    <div class="grid-element">
+        GET
+    </div>
+    <div class="grid-element">
+        None
+    </div>
+    <div class="grid-element">
+        A JSON object with data of the specific movie
+    </div>
+    <div class="grid-element">
+        Return data about a genre (description) by name/title
+    </div>
+    <div class="grid-element">
+        /movies/genre/[genre]
+    </div>
+    <div class="grid-element">
+        GET
+    </div>
+    <div class="grid-element">
+        None
+    </div>
+    <div class="grid-element">
+        A JSON object with data of the specific genre
+    </div>
+    <div class="grid-element">
+        Return data about a director (bio, birth year, death year) by name
+    </div>
+    <div class="grid-element">
+        /movies/director/[director]
+    </div>
+    <div class="grid-element">
+        GET
+    </div>
+    <div class="grid-element">
+        None
+    </div>
+    <div class="grid-element">
+        A JSON object with data of the specific director
+    </div>
+    <div class="grid-element">
+        Allow new users to register
+    </div>   
+    <div class="grid-element">
+        /users
+    </div>
+    <div class="grid-element">
+        POST
+    </div>
+    <div class="grid-element">
+        JSON object holding user data
+    </div>
+    <div class="grid-element">
+        A text message indicating that registration was successful
+    </div>
+    <div class="grid-element">
+        Allow users to update their user info (username)
+    </div>   
+    <div class="grid-element">
+        /users[id]
+    </div>
+    <div class="grid-element">
+        PUT
+    </div>
+    <div class="grid-element">
+        None
+    </div>
+    <div class="grid-element">
+        A text message indicating that info was updated
+    </div>
+    <div class="grid-element">
+        Allow users to add a movie to their list of favorites
+    </div>   
+    <div class="grid-element">
+        /users[id][movies]
+    </div>
+    <div class="grid-element">
+        PUT
+    </div>
+    <div class="grid-element">
+        A JSON object with the name of the movie
+    </div>
+    <div class="grid-element">
+        A text message indicating that movie was added to favorites
+    </div>
+    <div class="grid-element">
+        Allow users to remove a movie from their list of favorites
+    </div>   
+    <div class="grid-element">
+        /users[id][movies]
+    </div>
+    <div class="grid-element">
+        DELETE
+    </div>
+    <div class="grid-element">
+        None
+    </div>
+    <div class="grid-element">
+        A text message indicating that movie was removed from favorites
+    </div>
+    <div class="grid-element">
+        Allow existing users to unregister 
+    </div>   
+    <div class="grid-element">
+        /users[id]
+    </div>
+    <div class="grid-element">
+        DELETE
+    </div>
+    <div class="grid-element">
+        None
+    </div>
+    <div class="grid-element">
+        A text message indicating that a user email has been removed
+    </div>
+</div>
 </body>
 </html>

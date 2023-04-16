@@ -25,12 +25,12 @@ let users = [
     {
         id: 1,
         name: 'Philippe',
-        favorites: []
+        favorites: [{'title': 'lalaland'}]
     },
     {
         id: 2,
         name: 'Elisa',
-        favorites: []
+        favorites: [{'title': 'rust'}]
     }
 ]
 let movies = [
@@ -55,19 +55,19 @@ let movies = [
     },
     {
         "title": "Gone with the Wind",
-        "genre": "Historical Drama"
+        "genre": ["Historical Drama"]
     },
     {
         "title": "Das Boot",
-        "genre": "War"
+        "genre": ["War"]
     },
     {
         "title": "All quiet on the Western Front",
-        "genre": "War"
+        "genre": ["War"]
     },
     {
         "title": "The Sipmsons Movie",
-        "genre": "Comedy"
+        "genre": ["Comedy"]
     },
     {
        "title": "Life is Beautifull",
@@ -75,11 +75,11 @@ let movies = [
     },
     {
         "title": "Dr. Strangelove",
-        "genre": "Historical Fiction"
+        "genre": ["Historical Fiction"]
     },
     {
         "title": "Mathilda",
-        "genre": "Kids"
+        "genre": ["Kids"]
     }
 ]
 // allows access to all static files in public folder
@@ -104,14 +104,16 @@ app.get('/movies/:title', (req, res) => {
     res.status(200).send
 });
 
-app.get('/movies/genre:genreName', (req, res) => {
+app.get('/movies/genre/:genreName', (req, res) => {
     const { genreName } = req.params;
-    const genre = movies.find(movie => { movie.genre === genreName
-    }).genre;
+
+    const genre = movies.find ((movie) => {
+        return movie.genre.includes(genreName) || movie.genre === genreName
+    });
     
     if(genre){
         
-    res.status(200).json(movie);
+    res.status(200).json(genre);
         
     } else {
         res.send('Genre not found')
@@ -119,14 +121,15 @@ app.get('/movies/genre:genreName', (req, res) => {
     }
 })
 
-app.get('/movies/director:directorName', (req, res) => {
+app.get('/movies/director/:directorName', (req, res) => {
     const { directorName } = req.params;
-    const director = movies.find(movie => { movie.director === directorName
-    }).director;
+    const director = movies.find ((movie) => {
+        return movie.director.includes(directorName) || movie.director === directorName
+    });
     
     if(director){
-        res.send('Here are some films by this director:');
-    res.status(200).json(director)
+        
+        res.status(200).json(director)
     } else {
         res.send('Director not found')
         res.status(404);
@@ -145,7 +148,7 @@ app.post('/register', (req, res) => {
     }
 });
 
-app.post('/users/:id', (req, res) => {
+app.put('/users/:id', (req, res) => {
     const { id } = req.params; 
     const updatedUser = req.body;
 
@@ -161,37 +164,54 @@ app.post('/users/:id', (req, res) => {
 
 app.post('/users/:id/:movieTitle', (req, res) => {
     const { id, movieTitle} = req.params;
+    
 
     let user = users.find( user => user.id == id) 
 
     if (user) { 
         user.favorites.push(movieTitle)
-        user.name = updatedUser.name;
-        res.status(200).send('Film was added to favorites');
+        res.status(200).send(`${'Film'} ${movieTitle} ${'was added to favorites'}`);
     } else {
         res.status(400).send('invalid');
     }
 })
 
+app.delete('/users/:id/:movieTitle', (req, res) => {
+    const { id, movieTitle} = req.params;
+    
 
-app.delete('/users/:id/:movie', (req, res) => {
-    let movie = movies.find((movie) => { return movie === req.params.title });
-  
-    if (movie) {
-      movies = movies.filter((obj) => { return obj.id !== req.params.title });
-      res.status(201).send('Movie ' + req.params.id + ' was removed from favorites.');
+    let user = users.find( user => user.id == id) 
+
+    if (user) { 
+        user.favorites.filter( title => title !== movieTitle)
+        res.status(200).send(`${'Film'} ${movieTitle} ${'was removed from favorites'}`);
+    } else {
+        res.status(400).send('invalid');
     }
-  });
+});
 
+app.delete('/users/:id', (req, res) => {
+    const { id } = req.params;
+    
 
-app.delete('/unregister', (req, res) => {
-    let user = users.find((id) => { return user == req.params.id });
-  
-    if (user) {
-      user = user.filter((obj) => { return obj.id != req.params.title });
-      res.status(201).send('User ' + req.params.id + ' was successfully unregistered.');
+    let user = users.find( user => user.id == id) 
+
+    if (user) { 
+        users = users.filter( user => user.id !== id)
+        res.status(200).send(`${'user'} ${id} ${'has been deleted'}`);
+    } else {
+        res.status(400).send('invalid');
     }
-  });
+})
+
+// app.delete('/unregister', (req, res) => {
+//     let user = users.find((id) => { return user == req.params.id });
+  
+//     if (user) {
+//       user = user.filter((obj) => { return obj.id != req.params.title });
+//       res.status(201).send('User ' + req.params.id + ' was successfully unregistered.');
+//     }
+//   });
 
 // error handler
 app.use((err, req, res, next) => {

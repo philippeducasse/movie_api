@@ -1,17 +1,23 @@
 const bodyParser = require('body-parser');
 const express = require('express');
-morgan = require ('morgan');
-fs = require('fs');
-path = require('path');
-uuid = require('uuid')
+const morgan = require ('morgan');
+const fs = require('fs');
+const path = require('path');
+const uuid = require('uuid');
+const mongoose = require ('mongoose');
+const Models = require ('./models/models');
+
+const Movies = Models.Movie;
+const Users = Models.User;
+
+// allows mongoose to connect with database and perform CRUD
+mongoose.connect('mongodb://localhost:8080/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });
+
 
 // now the app will use only express logic
 const app = express();
-
-
-app.get('/', (req, res) => {
-    res.send('Welcome to Fletnix!');
-});
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }))
 
 //this invookes the morgan middleware
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
@@ -19,78 +25,25 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {f
 // setup the logger
 // now morgan is embeded in 'app'
 app.use(morgan('combined', {stream: accessLogStream}));
-app.use(bodyParser.json());
 
-let users = [
-    {
-        id: 1,
-        name: 'Philippe',
-        favorites: [{'title': 'lalaland'}]
-    },
-    {
-        id: 2,
-        name: 'Elisa',
-        favorites: [{'title': 'rust'}]
-    }
-]
-let movies = [
-    {
-        "title": "Lord of the Rings",
-        "genre":"Medieval Fantasy",
-        "director": "peter jackson",
-    },
-    {
-        "title": "Pulp Fiction",
-        "genre": ["Action", "Drama"],
-        "director": "quentin tarantino",
-    },
-    {
-        "title": "Barton Fink",
-        "genre": "Drama",
-        "director": "cohen brothers",
-    },
-    {
-        "title": "Un Prohpete",
-        "genre": ["Action", "Drama"]
-    },
-    {
-        "title": "Gone with the Wind",
-        "genre": ["Historical Drama"]
-    },
-    {
-        "title": "Das Boot",
-        "genre": ["War"]
-    },
-    {
-        "title": "All quiet on the Western Front",
-        "genre": ["War"]
-    },
-    {
-        "title": "The Sipmsons Movie",
-        "genre": ["Comedy"]
-    },
-    {
-       "title": "Life is Beautifull",
-        "genre": ["historical Fiction", "Comedy"]
-    },
-    {
-        "title": "Dr. Strangelove",
-        "genre": ["Historical Fiction"]
-    },
-    {
-        "title": "Mathilda",
-        "genre": ["Kids"]
-    }
-]
+;
+
 // allows access to all static files in public folder
 
 app.use(express.static('public'));
 
 //endpoints 
 
+// GET
+
+app.get('/', (req, res) => {
+    res.send('Welcome to Fletnix!');
+});
+
 app.get('/movies',(req, res) => {
     res.json(movies);
     res.status(200).send
+    
 });
 
 app.get('/movies/:title', (req, res) => {
@@ -135,32 +88,101 @@ app.get('/movies/director/:directorName', (req, res) => {
         res.status(404);
     }
 })
-
-app.post('/register', (req, res) => {
-    let newUser = req.body;
-
-    if (!newUser.name) {
-        res.status(400).send('Please enter a name');
-    } else {
-        newUser.id = uuid.v4();
-        users.push(newUser);
-        res.status(201).json(newUser)
-    }
+// return a list of ALL Users
+app.get('users', (req, res) => {
+    Users.find()
+        .then ( ( users) => {
+            res.status(201).json(users)
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
 });
 
-app.put('/users/:id', (req, res) => {
-    const { id } = req.params; 
-    const updatedUser = req.body;
+// return user by username (findOne)
 
-    let user = users.find( user => user.id == id) 
+app.get('users/:Username', (req, res) => {
+    Users.findOne( { Username : req.params.Username})
+        .then ( ( user) => {
+            res.status(201).json(user)
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
+});
+// POST
 
-    if (user) {
-        user.name = updatedUser.name;
-        res.status(200).json(user);
-    } else {
-        res.status(400).send('invalid');
-    }
-})
+app.post('/users', (req, res) => {
+    
+    //check if username already exists
+    Users.findOne( { 'UserName' : req.body.Username } )
+    // why is this 'users'? confused if its mentioning the imported model or if its something new
+    .then((user) => {
+        if (user) {
+            return res.status(400).send(red.body.Username + 'already exists');
+        } else {
+            //if user doesn´t already exist, use mongoose .create() fxn to create new user.
+            // each key refers to a specific key outline in models.js
+            // each value is set to the content of request body
+            Users
+                .create( {
+                    Username : req.body.Username,
+                    Password : req.body.Password,
+                    Email : req.body.Email,
+                    Birthday : req.body.Birthday
+                })
+                .then((user) => { res.status(201).json(user)})
+            .catch((error) => {
+                console.error(error);
+                res.status(500).send('Error: ' + error)
+            })
+                // Mongoose uses this information to populate a users document
+        }
+    })
+    .catch((error)=> {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+    })
+});
+
+app.post('/users/:Username/movies/:MovieID', (req, res) => {
+    Users.findOneAndUpdate( { Username: req.params.Username}, {
+        $push: { Favorites : req.params.MovieID}
+    }, { new: true},
+    (err, updatedUser) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+            } else {
+                res.json(updatedUser);
+            }
+    });
+});
+
+// UPDATE
+
+
+app.put('/users/:Username', (req, res) => {
+    Users.findOneAndUpdate({ Username: req.params.Username }, { $set:
+      {
+        Username: req.body.Username,
+        Password: req.body.Password,
+        Email: req.body.Email,
+        Birthday: req.body.Birthday
+      }
+    },
+    { new: true }, // This line makes sure that the updated document is returned
+    (err, updatedUser) => {
+      if(err) {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      } else {
+        res.json(updatedUser);
+      }
+    });
+  });
 
 app.post('/users/:id/:movieTitle', (req, res) => {
     const { id, movieTitle} = req.params;
@@ -175,6 +197,22 @@ app.post('/users/:id/:movieTitle', (req, res) => {
         res.status(400).send('invalid');
     }
 })
+// delete
+
+app.delete('/users/:Username', (req, res) => {
+    Users.findOneAndRemove( { 'Username' : req.params.Username})
+        .then((user) => {
+            if (!user){
+                res.status(400).send(req.params.Username + 'was not found')
+            } else {
+                res.status(200).send(req.params.Username + 'was deleted');
+            }
+        })
+        .catch((err)=> {
+            console.error(err);
+            res.status(500).send('Error: ' + err)
+        });
+});
 
 app.delete('/users/:id/:movieTitle', (req, res) => {
     const { id, movieTitle} = req.params;
@@ -183,7 +221,7 @@ app.delete('/users/:id/:movieTitle', (req, res) => {
     let user = users.find( user => user.id == id) 
 
     if (user) { 
-        user.favorites.filter( title => title !== movieTitle)
+        user.favorites = user.favorites.filter( title => title !== movieTitle)
         res.status(200).send(`${'Film'} ${movieTitle} ${'was removed from favorites'}`);
     } else {
         res.status(400).send('invalid');
@@ -203,15 +241,6 @@ app.delete('/users/:id', (req, res) => {
         res.status(400).send('invalid');
     }
 })
-
-// app.delete('/unregister', (req, res) => {
-//     let user = users.find((id) => { return user == req.params.id });
-  
-//     if (user) {
-//       user = user.filter((obj) => { return obj.id != req.params.title });
-//       res.status(201).send('User ' + req.params.id + ' was successfully unregistered.');
-//     }
-//   });
 
 // error handler
 app.use((err, req, res, next) => {

@@ -7,7 +7,7 @@ let movieSchema = mongoose.Schema({
     Description: { type : String, required: true },
     Genre: {
         Name: String,
-        description: String
+        Description: String
      },
      Director: {
         Name: String,
@@ -23,7 +23,7 @@ let movieSchema = mongoose.Schema({
     Password: { type : String, required: true },
     Email: { type : String, required: true },
     Birthday: Date,
-    Favorites: [{type:mongoose.Schema.Types.ObjectId, ref: 'movie'}]
+    Favorites: [{type:mongoose.Schema.Types.ObjectId, ref: 'Movie'}]
  });
 
 // defines

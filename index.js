@@ -11,8 +11,8 @@ const Movies = Models.Movie;
 const Users = Models.User;
 
 // allows mongoose to connect with database and perform CRUD
-mongoose.connect('mongodb://localhost:8080/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });
-
+mongoose.connect('mongodb://127.0.0.1/cfDB', { useNewUrlParser: true, useUnifiedTopology: true})
+ .then(() => { console.log('Connected to MongoDB'); }) .catch((err) => { console.error(err); });
 
 // now the app will use only express logic
 const app = express();
@@ -39,12 +39,17 @@ app.use(express.static('public'));
 app.get('/', (req, res) => {
     res.send('Welcome to Fletnix!');
 });
-
-app.get('/movies',(req, res) => {
-    res.json(movies);
-    res.status(200).send
-    
+app.get('movies', (req, res) => {
+    Movies.find()
+        .then ( ( movies) => {
+            res.status(201).json(movies)
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
 });
+
 
 app.get('/movies/:title', (req, res) => {
     const title = req.params.title
@@ -89,7 +94,7 @@ app.get('/movies/director/:directorName', (req, res) => {
     }
 })
 // return a list of ALL Users
-app.get('users', (req, res) => {
+app.get('Users', (req, res) => {
     Users.find()
         .then ( ( users) => {
             res.status(201).json(users)
@@ -106,6 +111,17 @@ app.get('users/:Username', (req, res) => {
     Users.findOne( { Username : req.params.Username})
         .then ( ( user) => {
             res.status(201).json(user)
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
+});
+
+app.get('users', (req, res) => {
+    Users.find()
+        .then ( ( users) => {
+            res.status(201).json(users)
         })
         .catch((err) => {
             console.error(err);

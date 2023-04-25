@@ -16,10 +16,18 @@ mongoose.connect('mongodb://127.0.0.1/cfDB', { useNewUrlParser: true, useUnified
 
 // now the app will use only express logic
 const app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }))
 
-//this invookes the morgan middleware
+//bodyparser middleware
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+//passport authentication
+
+let auth = require('./auth')(app); //'(app)' ensures that Express is available in auth.js
+const passport = require('passport');
+require('./passport');
+
+//this invokes the morgan middleware
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
 
 // setup the logger
@@ -39,8 +47,8 @@ app.use(express.static('public'));
 app.get('/', (req, res) => {
     res.send('Welcome to Fletnix!');
 });
-app.get('/movies', (req, res) => {
-    Movies.find()
+app.get('/movies', passport.authenticate('jwt', {session: false}) , (req, res) => { //authentication code goes between URL and callback
+    Movies.find()                                                                   //now any request to /movies requires a JWT Token
         .then ( ( movies) => {
             res.status(201).json(movies)
         })
@@ -127,7 +135,7 @@ app.get('/users', (req, res) => {
 
 // return user by username (findOne)
 
-app.get('users/:Username', (req, res) => {
+app.get('/users/:Username', (req, res) => {
     Users.findOne( { Username : req.params.Username})
         .then ( ( user) => {
             res.status(201).json(user)
@@ -149,7 +157,7 @@ app.post('/users', (req, res) => {
     // why is this 'users'? confused if its mentioning the imported model or if its something new
     .then((user) => {
         if (user) {
-            return res.status(400).send(red.body.Username + 'already exists');
+            return res.status(400).send(req.body.Username + 'already exists');
         } else {
             //if user doesn´t already exist, use mongoose .create() fxn to create new user.
             // each key refers to a specific key outline in models.js

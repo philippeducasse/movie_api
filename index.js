@@ -226,7 +226,7 @@ app.put('/users/:Username', (req, res) => {
 //remove a user
 
 app.delete('/users/:Username', (req, res) => {
-    Users.findOneAndRemove( { 'username' : req.params.Username})
+    Users.findOneAndRemove( { 'Username' : req.params.Username})
         .then((user) => {
             if (!user){
                 res.status(400).send(req.params.Username + ' was not found')

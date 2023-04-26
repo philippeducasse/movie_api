@@ -261,3 +261,8 @@
 ::1 - - [25/Apr/2023:11:28:16 +0000] "GET /movies HTTP/1.1" 201 6540 "-" "PostmanRuntime/7.32.2"
 ::1 - - [25/Apr/2023:11:31:05 +0000] "GET /movies HTTP/1.1" 401 - "-" "PostmanRuntime/7.32.2"
 ::1 - - [25/Apr/2023:11:36:32 +0000] "POST /users HTTP/1.1" 201 174 "-" "PostmanRuntime/7.32.2"
+::1 - - [25/Apr/2023:15:00:26 +0000] "POST /users HTTP/1.1" 201 174 "-" "PostmanRuntime/7.32.2"
+::1 - - [25/Apr/2023:15:04:14 +0000] "POST /users?Username=Margarette&Password=Thatcher HTTP/1.1" 400 23 "-" "PostmanRuntime/7.32.2"
+::1 - - [25/Apr/2023:15:23:43 +0000] "POST /Movies HTTP/1.1" 404 146 "-" "PostmanRuntime/7.32.2"
+::1 - - [25/Apr/2023:15:23:48 +0000] "GET /Movies HTTP/1.1" 401 - "-" "PostmanRuntime/7.32.2"
+::1 - - [25/Apr/2023:15:25:13 +0000] "GET /login?Username=Margarette&Password=Thatcher HTTP/1.1" 404 144 "-" "PostmanRuntime/7.32.2"

@@ -7,7 +7,7 @@ require("./passport"); // Your local pssport file, checks is the user and pass e
 
 let generateJWTToken = (user) => {
   return jwt.sign(user, jwtSecret, {
-    subject: user.username,
+    subject: user.Username,
     expiresIn: "1d",
     algorithm: "HS256",
   });
@@ -16,6 +16,7 @@ let generateJWTToken = (user) => {
 module.exports = (router) => {
   router.post("/login", (req, res) => {
     passport.authenticate("local", { session: false }, (error, user, info) => {
+      
       console.log({ error, user });
       if (error || !user) {
         return res.status(400).json({

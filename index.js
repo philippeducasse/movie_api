@@ -7,15 +7,31 @@ const uuid = require('uuid');
 const mongoose = require ('mongoose');
 const Models = require ('./models')
 
+
 const Movies = Models.Movie;
 const Users = Models.User;
 
+const app = express();
+const cors = require('cors');
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+
+
+app.use(cors({
+    origin: (origin, callback)=> {
+        if (!origin) return callback(null, true);
+        if(allowedOrigins.indexOf(origin)=== -1 ) {//if specific origins isnt found on list of permitted origins
+        let message = 'CORS policy for this application doesn`t allow request domain' + origin;
+        return callback(new Error(message), false);
+      }
+      return callback(null, true);
+    }
+}));
 // allows mongoose to connect with database and perform CRUD
 mongoose.connect('mongodb://127.0.0.1/cfDB', { useNewUrlParser: true, useUnifiedTopology: true})
  .then(() => { console.log('Connected to MongoDB'); }) .catch((err) => { console.error(err); });
 
 // now the app will use only express logic
-const app = express();
+
 
 //bodyparser middleware
 app.use(bodyParser.json());
@@ -59,7 +75,7 @@ app.get('/movies', passport.authenticate('jwt', {session: false}) , (req, res) =
 });
 
 
-app.get('/movies/:title', (req, res) => {
+app.get('/movies/:title', passport.authenticate('jwt', {session: false}), (req, res) => {
     Movies.findOne( { Title : req.params.title})
         .then( (movie)=> {
             res.status(201).json(movie)
@@ -71,7 +87,7 @@ app.get('/movies/:title', (req, res) => {
 });
 
     
-app.get('/movies/genre/:Genre', (req, res) => {
+app.get('/movies/genre/:Genre', passport.authenticate('jwt', {session: false}), (req, res) => {
 	Movies.find({ 'Genre.Title': req.params.Genre })
 		.then((movies) => {
 			if (movies.length == 0) {
@@ -87,7 +103,7 @@ app.get('/movies/genre/:Genre', (req, res) => {
 });
 
 // return info about a director
-app.get('/movies/director/:directorName', (req, res) => {
+app.get('/movies/director/:directorName', passport.authenticate('jwt', {session: false}), (req, res) => {
 	Movies.findOne({ 'Director.Name': req.params.directorName })
 		.then((movie) => {
 			if (!movie) {
@@ -105,7 +121,7 @@ app.get('/movies/director/:directorName', (req, res) => {
 
 // return info about a genre
 
-app.get('/genre/:genreName', (req, res) => {
+app.get('/genre/:genreName', passport.authenticate('jwt', {session: false}), (req, res) => {
 	Movies.findOne({ 'Genre.Title': req.params.genreName })
 		.then((movie) => {
 			if (!movie) {
@@ -151,10 +167,12 @@ app.get('/users/:Username', (req, res) => {
 
 //alows new users to register
 app.post('/users', (req, res) => {
+
+    // let hashedPassword = Users.hashPassword(req.body.Password);
     
     //check if username already exists
-    Users.findOne( { 'UserName' : req.body.Username } )
-    // why is this 'users'? confused if its mentioning the imported model or if its something new
+    Users.findOne( { 'Username' : req.body.Username } )
+    
     .then((user) => {
         if (user) {
             return res.status(400).send(req.body.Username + 'already exists');
@@ -165,7 +183,7 @@ app.post('/users', (req, res) => {
             Users
                 .create( {
                     Username : req.body.Username,
-                    Password : req.body.Password,
+                    Password : req.body.Password, // now when registering hashed password will be saved in the DB, not the actual pw w
                     Email : req.body.Email,
                     Birthday : req.body.Birthday
                 })
@@ -185,7 +203,7 @@ app.post('/users', (req, res) => {
 
 //add new movie to favorites
 
-app.post('/users/:Username/movies/:MovieID', (req, res) => {
+app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', {session: false}), (req, res) => {
     Users.findOneAndUpdate( { Username: req.params.Username}, {
         $addToSet: { Favorites : req.params.MovieID} //addToSet: if item already exists, won´t be added
     }, { new: true})
@@ -201,7 +219,7 @@ app.post('/users/:Username/movies/:MovieID', (req, res) => {
 // UPDATE
 
 //update user info 
-app.put('/users/:Username', (req, res) => {
+app.put('/users/:Username', passport.authenticate('jwt', {session: false}), (req, res) => {
     Users.findOneAndUpdate({ Username: req.params.Username }, { $set:
       {
         Username: req.body.Username,
@@ -225,7 +243,7 @@ app.put('/users/:Username', (req, res) => {
 
 //remove a user
 
-app.delete('/users/:Username', (req, res) => {
+app.delete('/users/:Username', passport.authenticate('jwt', {session: false}),  (req, res) => {
     Users.findOneAndRemove( { 'Username' : req.params.Username})
         .then((user) => {
             if (!user){
@@ -243,7 +261,7 @@ app.delete('/users/:Username', (req, res) => {
 
 // remove movie from favorites
 
-app.delete('/users/:Username/movies/:MovieID', (req, res) => {
+app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', {session: false}), (req, res) => {
     Users.findOneAndRemove( { Favorites : req.params.MovieID} )
         .then((Favorites)=>{
             if (!Favorites) {

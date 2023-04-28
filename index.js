@@ -6,6 +6,7 @@ const path = require('path');
 const uuid = require('uuid');
 const mongoose = require ('mongoose');
 const Models = require ('./models')
+const { check, validationResult } = require('express-validator');
 
 
 const Movies = Models.Movie;
@@ -166,9 +167,23 @@ app.get('/users/:Username', (req, res) => {
 // CREATE
 
 //alows new users to register
-app.post('/users', (req, res) => {
+app.post('/users',
+    //validation logic goes here
+    [
+        check('Username', 'Username is required').isLength({min: 5}), // minumum length of username is 5 char
+        check('Username', 'Username contains non alphanumeric characters - not allowed').isAlphanumeric(),
+        check('Password', 'Password is required').not().isEmpty(), // password input must not be empty
+        check('Email', 'Email does not appear to be valid').isEmail()
+    ], (req, res) => {
 
-    // let hashedPassword = Users.hashPassword(req.body.Password);
+        //check validation object for errors
+        let errors = validationResult(req); 
+        if (!errors.isEmpty()){ //if errors is not empty (if there are arreors--->)
+            return res.status(422).json({errors: errors.array()}) //if errors in validation occur then send back to client in an array
+        }
+
+        // if error occurs rest of the code will not be executed
+    let hashedPassword = Users.hashPassword(req.body.Password);
     
     //check if username already exists
     Users.findOne( { 'Username' : req.body.Username } )
@@ -183,7 +198,7 @@ app.post('/users', (req, res) => {
             Users
                 .create( {
                     Username : req.body.Username,
-                    Password : req.body.Password, // now when registering hashed password will be saved in the DB, not the actual pw w
+                    Password : hashedPassword, // now when registering hashed password will be saved in the DB, not the actual pw w
                     Email : req.body.Email,
                     Birthday : req.body.Birthday
                 })
@@ -282,8 +297,8 @@ app.use((err, req, res, next) => {
   });
 
 
+const port = process.env.PORT || 8080;
 
-app.listen(8080, () => {
-    console.log('Listening on port 8080');
-
+app.listen(port, '0.0.0.0', () => {
+    console.log('Listening on port ' + port);
 })

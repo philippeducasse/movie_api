@@ -189,7 +189,7 @@ app.post('/users',
         if (!errors.isEmpty()){ //if errors is not empty (if there are arreors--->)
             return res.status(422).json({errors: errors.array()}) //if errors in validation occur then send back to client in an array
         }
-
+    console.log(Users)
         // if error occurs rest of the code will not be executed
     let hashedPassword = Users.hashPassword(req.body.Password);
     

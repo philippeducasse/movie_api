@@ -12,6 +12,8 @@ const { check, validationResult } = require('express-validator');
 const Movies = Models.Movie;
 const Users = Models.User;
 
+// now the app will use only express logic
+
 const app = express();
 const cors = require('cors');
 let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
@@ -28,10 +30,16 @@ app.use(cors({
     }
 }));
 // allows mongoose to connect with database and perform CRUD
-mongoose.connect('mongodb://127.0.0.1/cfDB', { useNewUrlParser: true, useUnifiedTopology: true})
- .then(() => { console.log('Connected to MongoDB'); }) .catch((err) => { console.error(err); });
 
-// now the app will use only express logic
+//this code is for connecting to local server, only for testing
+
+// mongoose.connect('mongodb://127.0.0.1/cfDB', { useNewUrlParser: true, useUnifiedTopology: true})
+//  .then(() => { console.log('Connected to MongoDB'); }) .catch((err) => { console.error(err); });
+
+//this code is to connect to mongoAtlas
+
+mongoose.connect(' process.env.CONNECTION_URI', { useNewUrlParser: true, useUnifiedTopology: true})
+.then(() => { console.log('Connected to MongoDB'); }) .catch((err) => { console.error(err); });
 
 
 //bodyparser middleware
@@ -302,3 +310,5 @@ const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0', () => {
     console.log('Listening on port ' + port);
 })
+
+

@@ -295,3 +295,4 @@
 ::1 - - [27/Apr/2023:19:08:36 +0000] "POST /users HTTP/1.1" 201 168 "-" "PostmanRuntime/7.32.2"
 ::1 - - [27/Apr/2023:19:09:22 +0000] "GET /login?Username=Philippe&Password=New_password HTTP/1.1" 404 144 "-" "PostmanRuntime/7.32.2"
 ::1 - - [27/Apr/2023:19:10:48 +0000] "DELETE /users/Philippe HTTP/1.1" 200 19 "-" "PostmanRuntime/7.32.2"
+127.0.0.1 - - [29/Apr/2023:12:10:35 +0000] "POST /users HTTP/1.1" 201 215 "-" "PostmanRuntime/7.32.2"

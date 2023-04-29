@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const uuid = require('uuid');
 const mongoose = require ('mongoose');
-const Models = require ('./models')
+const Models = require ('./models/models')
 const { check, validationResult } = require('express-validator');
 
 

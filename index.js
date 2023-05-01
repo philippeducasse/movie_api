@@ -40,6 +40,7 @@ app.use(cors({
 //this code is to connect to mongoAtlas
 console.log(process.env.PORT)
 console.log(process.env)
+console.log('stephen')
 console.log('Connection_URI:', process.env.CONNECTION_URI);
 
 mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true})

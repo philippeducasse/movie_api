@@ -17,13 +17,14 @@ const Users = Models.User;
 
 const app = express();
 const cors = require('cors');
+app.use(cors({ origin: '*' }))
 
 //code to restrict origin
 
 // let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 
 
-// app.use(cors({
+
 //     origin: (origin, callback)=> {
 //         if (!origin) return callback(null, true);
 //         if(allowedOrigins.indexOf(origin)=== -1 ) {//if specific origins isnt found on list of permitted origins

@@ -17,19 +17,24 @@ const Users = Models.User;
 
 const app = express();
 const cors = require('cors');
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+
+//code to restrict origin
+
+// let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 
 
-app.use(cors({
-    origin: (origin, callback)=> {
-        if (!origin) return callback(null, true);
-        if(allowedOrigins.indexOf(origin)=== -1 ) {//if specific origins isnt found on list of permitted origins
-        let message = 'CORS policy for this application doesn`t allow request domain' + origin;
-        return callback(new Error(message), false);
-      }
-      return callback(null, true);
-    }
-}));
+// app.use(cors({
+//     origin: (origin, callback)=> {
+//         if (!origin) return callback(null, true);
+//         if(allowedOrigins.indexOf(origin)=== -1 ) {//if specific origins isnt found on list of permitted origins
+//         let message = 'CORS policy for this application doesn`t allow request domain' + origin;
+//         return callback(new Error(message), false);
+//       }
+//       return callback(null, true);
+//     }
+// }));
+
+
 // allows mongoose to connect with database and perform CRUD
 
 //this code is for connecting to local server, only for testing
@@ -38,9 +43,6 @@ app.use(cors({
 //  .then(() => { console.log('Connected to MongoDB'); }) .catch((err) => { console.error(err); });
 
 //this code is to connect to mongoAtlas
-console.log(process.env.PORT)
-console.log(process.env)
-console.log('stephen')
 console.log('Connection_URI:', process.env.CONNECTION_URI);
 
 mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true})

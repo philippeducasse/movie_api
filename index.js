@@ -80,7 +80,9 @@ app.use(express.static('public'));
 app.get('/', (req, res) => {
     res.send('Welcome to Fletnix!');
 });
-app.get('/movies', passport.authenticate('jwt', {session: false}) , (req, res) => { //authentication code goes between URL and callback
+app.get('/movies',
+    // passport.authenticate('jwt', {session: false}) ,
+     (req, res) => { //authentication code goes between URL and callback
     Movies.find()                                                                   //now any request to /movies requires a JWT Token
         .then ( ( movies) => {
             res.status(201).json(movies)

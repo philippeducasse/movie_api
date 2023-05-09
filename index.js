@@ -81,7 +81,7 @@ app.get('/', (req, res) => {
     res.send('Welcome to Fletnix!');
 });
 app.get('/movies',
-//  passport.authenticate('jwt', {session: false}) ,
+ passport.authenticate('jwt', {session: false}) ,
  (req, res) => { //authentication code goes between URL and callback
     Movies.find()                                                                   //now any request to /movies requires a JWT Token
         .then ( ( movies) => {

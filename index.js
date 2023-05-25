@@ -312,13 +312,13 @@ app.delete('/users/:Username', passport.authenticate('jwt', {session: false}),  
 // remove movie from favorites
 
 app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', {session: false}), (req, res) => {
-    Users.findOneAndRemove( { Favorites : req.params.MovieID} )
-        .then((Favorites)=>{
-            if (!Favorites) {
-                res.status(400).send(req.params.MovieId + ' was not a favorite')
-            } else {
+    Users.findOneAndUpdate( { Username : req.params.Username}, {$removeFromSet: { Favorites : req.params.MovieID} //addToSet: if item already exists, won´t be added
+}, { new: true}) 
+    
+        .then((data)=>{
+            console.log(data);            
             res.status(200).send(req.params.MovieID + ' was removed from favorites')
-        } })
+        } )
         .catch((err)=> {
             console.error(err);
             res.status(500).send('Error: ' + err);

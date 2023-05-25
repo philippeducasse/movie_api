@@ -312,7 +312,7 @@ app.delete('/users/:Username', passport.authenticate('jwt', {session: false}),  
 // remove movie from favorites
 
 app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', {session: false}), (req, res) => {
-    Users.findOneAndUpdate( { Username : req.params.Username}, {$pullAll: { Favorites : req.params.MovieID} //addToSet: if item already exists, won´t be added
+    Users.findOneAndUpdate( { Username : req.params.Username}, {$pullAll: { Favorites : [req.params.MovieID]} //addToSet: if item already exists, won´t be added
 }, { new: true}) 
     
         .then((data)=>{

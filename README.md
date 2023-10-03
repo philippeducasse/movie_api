@@ -2,7 +2,7 @@
 
 ## Project Description
 
-In this project, I built the back-end server for a movies database using NodeJS. This database contains a list of movies, which are JS objects with specific properties; and also a list of users. 
+In this project, I built the back-end server for a movies database using NodeJS. This database contains a list of movies, which are JS objects with specific properties; and also a list of users. The API was built using the REST API framework Express, and the data was stored on the SQL databasse MongoDB.
 
 ## Key Features
 The aim of this project was to create an app which would allow users to register, log-in, access the list of movies, add movies a favorites list, remove movies from favorites, access & update user info, access movies by genre, unregister, and more.
@@ -28,7 +28,7 @@ node index.js
 - Postman (endpoint testing)
 - Passport (authorisastion framework)
 - Mongo Atlas
-- Render
+- Render (hosting)
 - Models (data structuring)
 
 ## Personal Notes

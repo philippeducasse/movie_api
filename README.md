@@ -17,8 +17,6 @@ Create a new directory for your project, navigate to it and run:
 
 node index.js
 
-### how to make  changes to the repository
-
 ## Technologies & concepts used
 
 - NodeJS
@@ -31,18 +29,15 @@ node index.js
 - Render (hosting)
 - Models (data structuring)
 
-## Personal Notes
+## Further notes
 
-The database was built using NodeJS and was hosted on MongoDB (Mongo Atlas). NodeJS was the language used because this allowed me to draw from my previous experience of working with vanilla JS. As this was my first real exposure to server-side programming, it made sense to implement a language with which I already had some familiarity. Specifically, Express was used as a framework as this provided a robust and accessible framework for writing the necessary back-end code. This project was my first exposure to many core principles and techniques of a full-stack developper, such as working with the terminal console and learning how to write API endpoints in Node. 
+The database was built using NodeJS and was hosted on MongoDB (Mongo Atlas). Express was used as a framework as this provides a robust and accessible framework for writing the necessary back-end code. 
 
-The first part of the project involved creating a database locally by using MongoDB, in which an array of movies and users was created. Each movie was an object which contained a title, director, genre, and other properties. I learned how to use the Mongosh Shell to create, read, update, and delete data by creating and defining enpoints using Node. These actions (also called requests) are the basis in understanding how users can access and interact with data stored on a database. I also learned how to define the data strcuture for my project using models. I then learned about relational and non-relational databases and SQL; which was the language to perform CRUD operations in this project. To test if the API endpoints were working correctly, I used Postman to perform CRUD operations. 
+The first part of the project involves creating a database locally by using MongoDB, in which an array of movies and users is created. Each movie is an object which contained a title, director, genre, and other properties. For this to work you have to install mongosh in the directory (orglobally) by following the isntructions on the mongoDB website.
 
-I then implemented server side authorisation & athentication using a framework called Passport. I learned how to implement passwords, tokens, and other forms of authentication and authorisation (such as CORS), thus giving more security to my project. I then used a free hosting service from Mongo Atlas to have the database online and not only on my local machine, and then proceeded to link up the online database with a free domain provider, Render. This enabled me to have a completely self made app, which had an online database and a domain name to access the site online. 
+The database used is a relational database written in SQL. Once the database is created you can use the files in this repository to perform the various CRUD opoerations (see the documentation). For this project I was also exposed to Postman, an API endpoint testing software.
 
-## Challenges Faced
-
-The biggest challenge of this project for me was getting the API endpoints defined correctly. I found it very difficult to understand all the intrications of the syntax, especially because many of the endpoints had a lot of middleware functions. Another challenge was in getting the authentication and authorisation to work correctly. 
-
+Server side authorisation & athentication was then implemented using a framework called Passport, giving the API more security. Tokens and user credentials were used to authenticate and authorise each API call. I then used a free hosting service from Mongo Atlas to have the database online and not only on my local machine, and then proceeded to link up the online database with a free domain provider, Render. This enabled me to have a completely self made app, which had an online database and a domain name to access the site online. 
 
 ## Credits
 

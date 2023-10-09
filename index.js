@@ -284,7 +284,7 @@ app.put('/users/:Id',
         check('Username', 'Username contains non alphanumeric characters - not allowed').isAlphanumeric(),
         check('Password', 'Password is required').not().isEmpty(), // password input must not be empty
         check('Email', 'Email does not appear to be valid').isEmail(),
-        check('Birthday', 'Please enter a valid date').isDate()
+        check('Birthday', 'Please enter a valid date').not().isEmpty(),
     ],
     passport.authenticate('jwt', { session: false }), (req, res) => {
         let errors = validationResult(req);

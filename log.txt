@@ -317,3 +317,6 @@
 127.0.0.1 - - [09/Oct/2023:09:40:58 +0000] "POST /users/ HTTP/1.1" 201 216 "-" "PostmanRuntime/7.33.0"
 127.0.0.1 - - [09/Oct/2023:09:41:11 +0000] "POST /users/ HTTP/1.1" 422 99 "-" "PostmanRuntime/7.33.0"
 127.0.0.1 - - [09/Oct/2023:09:41:25 +0000] "POST /users/ HTTP/1.1" 422 302 "-" "PostmanRuntime/7.33.0"
+127.0.0.1 - - [09/Oct/2023:14:14:43 +0000] "POST /users HTTP/1.1" 201 213 "-" "PostmanRuntime/7.33.0"
+127.0.0.1 - - [09/Oct/2023:14:16:23 +0000] "PUT /users/65240ad37f2c0e95b608240c HTTP/1.1" 422 120 "-" "PostmanRuntime/7.33.0"
+127.0.0.1 - - [09/Oct/2023:14:17:53 +0000] "PUT /users/65240ad37f2c0e95b608240c HTTP/1.1" 200 215 "-" "PostmanRuntime/7.33.0"

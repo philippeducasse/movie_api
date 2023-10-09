@@ -283,6 +283,7 @@ app.put('/users/:Id',
         check('Username', 'Username is required').isLength({ min: 5 }), // minumum length of username is 5 char
         check('Username', 'Username contains non alphanumeric characters - not allowed').isAlphanumeric(),
         check('Password', 'Password is required').not().isEmpty(), // password input must not be empty
+        check('Password', 'Password must be at least 5 characters').isLength({ min: 5}), // password input must not be empty
         check('Email', 'Email does not appear to be valid').isEmail(),
         check('Birthday', 'Please enter a valid date').not().isEmpty(),
     ],

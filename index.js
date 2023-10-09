@@ -40,14 +40,14 @@ app.use(cors({ origin: '*' }))
 
 //this code is for connecting to local server, only for testing
 
-mongoose.connect('mongodb://127.0.0.1/cfDB', { useNewUrlParser: true, useUnifiedTopology: true})
- .then(() => { console.log('Connected to MongoDB'); }) .catch((err) => { console.error(err); });
+// mongoose.connect('mongodb://127.0.0.1/cfDB', { useNewUrlParser: true, useUnifiedTopology: true})
+//  .then(() => { console.log('Connected to MongoDB'); }) .catch((err) => { console.error(err); });
 
 //this code is to connect to mongoAtlas
 console.log('Connection_URI:', process.env.CONNECTION_URI);
 
-// mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-//     .then(() => { console.log('Connected to MongoDB'); }).catch((err) => { console.error(err); });
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => { console.log('Connected to MongoDB'); }).catch((err) => { console.error(err); });
 
 
 //bodyparser middleware

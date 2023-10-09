@@ -20,7 +20,7 @@ module.exports = (router) => {
       console.log({ error, user });
       if (error || !user) {
         return res.status(400).json({
-          message: "Something is not right",
+          message: "Invalid username or password",
           user: user,
           error,
         });

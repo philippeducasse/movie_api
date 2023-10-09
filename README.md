@@ -17,6 +17,10 @@ Create a new directory for your project, navigate to it and run:
 
 node index.js
 
+If you want to run the app in dev mode, run
+
+npm run dev
+
 ## Technologies & concepts used
 
 - NodeJS

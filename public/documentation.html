@@ -26,6 +26,43 @@
         Response body data format
     </div>
     <div class="grid-element">
+        Allow new users to register
+    </div>   
+    <div class="grid-element">
+        /users
+    </div>
+    <div class="grid-element">
+        POST
+    </div>
+    <div class="grid-element">
+        JSON object holding user data:
+        example:
+        {
+            "Username":"Philippe",
+            "Password" : "password",
+            "Email":"newmail@aol.com",
+            "Birthday":"01.03.1992"
+        }
+    </div>
+    <div class="grid-element">
+        Allow users to login
+    </div>   
+    <div class="grid-element">
+        /login
+    </div>
+    <div class="grid-element">
+        POST
+    </div>
+    <div class="grid-element">
+        Key-value params with username & password
+        example:
+        
+            Username: Philippe
+            Password : password
+            
+        
+    </div>
+    <div class="grid-element">
         Return a list of ALL movies to the user
     </div>
     <div class="grid-element">
@@ -35,7 +72,7 @@
         GET
     </div>
     <div class="grid-element">
-        None
+        Authorisation Token
     </div>
     <div class="grid-element">
         A JSON object with data of all the movies
@@ -50,7 +87,7 @@
         GET
     </div>
     <div class="grid-element">
-        None
+        Authorisation Token
     </div>
     <div class="grid-element">
         A JSON object with data of the specific movie
@@ -65,7 +102,7 @@
         GET
     </div>
     <div class="grid-element">
-        None
+        Authorisation Token
     </div>
     <div class="grid-element">
         A JSON object with data of the specific genre
@@ -80,37 +117,32 @@
         GET
     </div>
     <div class="grid-element">
-        None
+        Authorisation Token
     </div>
     <div class="grid-element">
         A JSON object with data of the specific director
     </div>
     <div class="grid-element">
-        Allow new users to register
-    </div>   
-    <div class="grid-element">
-        /users
-    </div>
-    <div class="grid-element">
-        POST
-    </div>
-    <div class="grid-element">
-        JSON object holding user data
-    </div>
-    <div class="grid-element">
         A text message indicating that registration was successful
     </div>
     <div class="grid-element">
-        Allow users to update their user info (username)
+        Allow users to update their user info 
     </div>   
     <div class="grid-element">
-        /users[id]
+        /users/username
     </div>
     <div class="grid-element">
         PUT
     </div>
     <div class="grid-element">
-        A JSON object with new usernamename
+        A JSON object with new user info. Must include ALL fields
+        example:
+        {
+            "Username":"UpdatedUsername",
+            "Password" : "samepassword",
+            "Email":"samemail@aol.com",
+            "Birthday":"01.03.1992"
+        }
     </div>
     <div class="grid-element">
         A text message indicating that info was updated

@@ -278,7 +278,7 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { sess
 /**
  * UPDATE updates user info
  */
-app.put('/users/:Username',
+app.put('/users/:Id',
     [
         check('Username', 'Username is required').isLength({ min: 5 }), // minumum length of username is 5 char
         check('Username', 'Username contains non alphanumeric characters - not allowed').isAlphanumeric(),
@@ -294,7 +294,7 @@ app.put('/users/:Username',
         // if error occurs rest of the code will not be executed
         let hashedPassword = Users.hashPassword(req.body.Password);
 
-        Users.findOneAndUpdate({ Username: req.params.Username }, {
+        Users.findOneAndUpdate({ Id: req.params._id }, {
             $set:
             {
                 Username: req.body.Username,
@@ -305,6 +305,7 @@ app.put('/users/:Username',
         },
             { new: true }) // This line makes sure that the updated document is returned
             .then((updatedUser) => {
+                console.log(updatedUser);
                 res.json(updatedUser);
             })
             .catch((err) => {

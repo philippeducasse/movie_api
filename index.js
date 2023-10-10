@@ -123,7 +123,7 @@ app.get('/movies/:title',
  */
 
 app.get('/movies/genre/:Genre', passport.authenticate('jwt', { session: false }), (req, res) => {
-    Movies.find({ 'Genre.Title': req.params.Genre })
+    Movies.find({ 'Genre.Name': req.params.Genre })
         .then((movies) => {
             if (movies.length == 0) {
                 return res.status(404).send('Error: no movies found with the ' + req.params.Genre + ' genre type.');

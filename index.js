@@ -144,9 +144,8 @@ app.get('/movies/director/:directorName', passport.authenticate('jwt', { session
     Movies.findOne({ 'Director.Name': req.params.directorName })
         .then((movie) => {
             if (!movie) {
-                return res.status(404).send('Error: director ' + req.params.Genre + ' not found.');
+                return res.status(404).send('Error: director ' + req.params.directorName + ' not found.');
             } else {
-
                 res.status(200).json(movie.Director); // to only send back info about the director
             }
         })

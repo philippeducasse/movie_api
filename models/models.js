@@ -15,7 +15,7 @@ let movieSchema = mongoose.Schema({
         Name: String,
         About: String,
         BirthYear: Number,
-        DeatherYear: Number
+        DeathYear: Number
      },
      Actors: [String],
      ImagePath: String,
@@ -26,7 +26,7 @@ let movieSchema = mongoose.Schema({
     Username: { type : String, required: true },
     Password: { type : String, required: true },
     Email: { type : String, required: true },
-    Birthday: Date,
+    Birthday: Date, //dd.mm.yyyy
     Favorites: [{type:mongoose.Schema.Types.ObjectId, ref: 'Movie'}]
  });
 
